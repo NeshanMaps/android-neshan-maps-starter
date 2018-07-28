@@ -99,8 +99,7 @@ public class DatabaseLayer extends AppCompatActivity {
         // we create an AssetDatabaseHelper object, create a new database in mobile storage
         // and copy database.sqlite file into the new created database
         // Then we open the database and return the SQLiteDatabase object
-        AssetDatabaseHelper myDbHelper = new AssetDatabaseHelper(getApplicationContext());
-        myDbHelper = new AssetDatabaseHelper(this);
+        AssetDatabaseHelper myDbHelper = new AssetDatabaseHelper(this);
 
         try {
             myDbHelper.createDataBase();
@@ -113,7 +112,7 @@ public class DatabaseLayer extends AppCompatActivity {
             pointsDB = myDbHelper.openDataBase();
         }
         catch(SQLException sqle){
-            throw sqle;
+            sqle.printStackTrace();
         }
 
 
@@ -133,6 +132,7 @@ public class DatabaseLayer extends AppCompatActivity {
             while (!cursor.isAfterLast()) {
                 double lng = cursor.getDouble(cursor.getColumnIndex("lng"));
                 double lat = cursor.getDouble(cursor.getColumnIndex("lat"));
+                Log.i("POINTS", "getDBPoints: "+lat+" "+lng);
                 LngLat lngLat = new LngLat(lng, lat);
 
                 // validating min and max
@@ -145,14 +145,31 @@ public class DatabaseLayer extends AppCompatActivity {
 
                 cursor.moveToNext();
             }
-            map.moveToCameraBounds(
-                    new Bounds(new LngLat(minLng, minLat), new LngLat(maxLng, maxLat)),
+            final double finalMinLng = minLng;
+            final double finalMinLat = minLat;
+            final double finalMaxLng = maxLng;
+            final double finalMaxLat = maxLat;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                                    map.moveToCameraBounds(
+                    new Bounds(new LngLat(finalMinLng, finalMinLat), new LngLat(finalMaxLng, finalMaxLat)),
                     new ViewportBounds(
                             new ViewportPosition(0,0),
                             new ViewportPosition(map.getWidth(),map.getHeight())
                     ),
                     true, 0.25f);
+                    }
+                }
+            }).start();
+            Log.i("BOUND", "getDBPoints: "+minLat+" "+minLng+"----"+maxLat+" "+maxLng);
         }
+        cursor.close();
     }
 
 

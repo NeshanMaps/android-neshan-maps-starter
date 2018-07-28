@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp.activity;
+package org.neshan.sample.starter.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +11,7 @@ import android.widget.ToggleButton;
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
 import org.neshan.layers.VectorElementLayer;
-import org.neshan.sample.starterapp.R;
+import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
 import org.neshan.ui.MapView;

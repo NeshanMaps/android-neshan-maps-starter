@@ -1,41 +1,32 @@
-package org.neshan.sample.starterapp.activity;
+package org.neshan.sample.starter.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.Toast;
 
 import org.neshan.core.LngLat;
-import org.neshan.core.LngLatVector;
 import org.neshan.core.Range;
-import org.neshan.geometry.LineGeom;
-import org.neshan.graphics.ARGB;
-import org.neshan.layers.VectorElementLayer;
-import org.neshan.sample.starterapp.R;
+import org.neshan.sample.starter.R;
+import org.neshan.sample.starter.custom_view.CircularSeekBar;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
-import org.neshan.styles.LineStyle;
-import org.neshan.styles.LineStyleCreator;
 import org.neshan.ui.MapEventListener;
 import org.neshan.ui.MapView;
-import org.neshan.vectorelements.Line;
-
-import java.util.List;
 
 
-public class ChangeCameraTilt extends AppCompatActivity {
+public class ChangeCameraBearing extends AppCompatActivity {
 
     // layer number in which map is added
     final int BASE_MAP_INDEX = 0;
 
     // map UI element
     MapView map;
-    // camera tilt control
-    SeekBar tiltSeekBar;
+    // camera bearing control
+    CircularSeekBar bearingSeekBar;
+
+    // variable that hold camera bearing
+    float cameraBearing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +36,7 @@ public class ChangeCameraTilt extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_change_camera_tilt);
+        setContentView(R.layout.activity_change_camera_bearing);
 
         // everything related to ui is initialized here
         initLayoutReferences();
@@ -58,45 +49,42 @@ public class ChangeCameraTilt extends AppCompatActivity {
         initViews();
         // Initializing mapView element
         initMap();
-        // connect tilt seek bar to camera
-        tiltSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        // connect bearing seek bar to camera
+        bearingSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // change camera tilt programmatically
-
-                // because of we can not set min range for seek bar we take seek bar range 0-60
-                // then add 30 in each read seek bar to convert it to neshan camera tilt range(30-90)
-                // for reverse converting subtract 30 in each setting progress for seek bar
-                map.setTilt(progress + 30, 0f);
+            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
+                // change camera bearing programmatically
+                map.setBearing(progress, 0f);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(CircularSeekBar seekBar) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(CircularSeekBar seekBar) {
 
             }
         });
 
-        // sync map with tilt controller
-        map.setMapEventListener(new MapEventListener(){
+        map.setMapEventListener(new MapEventListener() {
 
             // detect user input ( zoom, change tilt, change bearing, etc )
             @Override
             public void onMapMoved() {
                 super.onMapMoved();
-                // because of we can not set min range for seek bar we take seek bar range 0-60
-                // then add 30 in each read seek bar to convert it to neshan camera tilt range(30-90)
-                // for reverse converting subtract 30 in each setting progress for seek bar
-
+                // updating seek bar with new camera bearing value
+                if (map.getBearing() < 0) {
+                    cameraBearing = (180 + map.getBearing()) + 180;
+                } else {
+                    cameraBearing = map.getBearing();
+                }
                 // updating own ui element must run on ui thread not in map ui thread
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tiltSeekBar.setProgress(Math.round(map.getTilt()) - 30);
+                        bearingSeekBar.setProgress(cameraBearing);
                     }
                 });
             }
@@ -104,19 +92,20 @@ public class ChangeCameraTilt extends AppCompatActivity {
     }
 
     // We use findViewByID for every element in our layout file here
-    private void initViews(){
+    private void initViews() {
         map = findViewById(R.id.map);
-        tiltSeekBar = findViewById(R.id.tilt_seek_bar);
+        bearingSeekBar = findViewById(R.id.bearing_seek_bar);
     }
 
     // Initializing map
-    private void initMap(){
+    private void initMap() {
         // add Standard_day map to layer BASE_MAP_INDEX
         map.getOptions().setZoomRange(new Range(4.5f, 18f));
         map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
 
         // Setting map focal position to a fixed position and setting camera zoom
-        map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
-        map.setZoom(14,0);
+        map.setFocalPointPosition(new LngLat(51.330743, 35.767234), 0);
+        map.setZoom(14, 0);
     }
+
 }

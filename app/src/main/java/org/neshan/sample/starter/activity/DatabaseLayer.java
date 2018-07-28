@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp.activity;
+package org.neshan.sample.starter.activity;
 
 import android.database.Cursor;
 import android.database.SQLException;
@@ -18,8 +18,8 @@ import org.neshan.core.Range;
 import org.neshan.core.ViewportBounds;
 import org.neshan.core.ViewportPosition;
 import org.neshan.layers.VectorElementLayer;
-import org.neshan.sample.starterapp.R;
-import org.neshan.sample.starterapp.database_helper.AssetDatabaseHelper;
+import org.neshan.sample.starter.R;
+import org.neshan.sample.starter.database_helper.AssetDatabaseHelper;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
 import org.neshan.styles.AnimationStyle;

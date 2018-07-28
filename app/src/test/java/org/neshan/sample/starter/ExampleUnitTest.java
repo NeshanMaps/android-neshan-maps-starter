@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp;
+package org.neshan.sample.starter;
 
 import org.junit.Test;
 

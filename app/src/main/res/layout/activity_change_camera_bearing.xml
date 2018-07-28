@@ -67,7 +67,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <org.neshan.sample.starterapp.custom_view.CircularSeekBar
+        <org.neshan.sample.starter.custom_view.CircularSeekBar
             android:id="@+id/bearing_seek_bar"
             android:layout_width="100dp"
             android:layout_height="100dp"

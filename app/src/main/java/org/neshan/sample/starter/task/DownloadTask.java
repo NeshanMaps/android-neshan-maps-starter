@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp.task;
+package org.neshan.sample.starter.task;
 
 import android.os.AsyncTask;
 

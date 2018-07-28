@@ -16,7 +16,7 @@ public class AssetDatabaseHelper extends SQLiteOpenHelper {
 
     // CHANGE THIS TWO LINE OF CODES!
     //The Android's default system path of your application database.
-    private static String DB_PATH = "/data/data/org.neshan.sample.starterapp/databases/";
+    private static String DB_PATH = "/data/data/org.neshan.sample.starter/databases/";
     private static String DB_NAME = "database.sqlite";
 
     private SQLiteDatabase myDataBase;
@@ -39,25 +39,18 @@ public class AssetDatabaseHelper extends SQLiteOpenHelper {
      * */
     public void createDataBase() throws IOException {
 
-        boolean dbExist = checkDataBase();
+        //By calling this method and empty database will be created into the default system path
+        //of your application so we are gonna be able to overwrite that database with our database.
+        this.getReadableDatabase();
 
-        if(dbExist){
-            //do nothing - database already exist
-        } else{
+        try {
 
-            //By calling this method and empty database will be created into the default system path
-            //of your application so we are gonna be able to overwrite that database with our database.
-            this.getReadableDatabase();
+            copyDataBase();
 
-            try {
+        } catch (IOException e) {
 
-                copyDataBase();
+            throw new Error("Error copying database");
 
-            } catch (IOException e) {
-
-                throw new Error("Error copying database");
-
-            }
         }
 
     }
@@ -103,7 +96,7 @@ public class AssetDatabaseHelper extends SQLiteOpenHelper {
         String outFileName = DB_PATH + DB_NAME;
 
         //Open the empty db as the output stream
-        OutputStream myOutput = new FileOutputStream(outFileName);
+        FileOutputStream myOutput = new FileOutputStream(outFileName, false);
 
         //transfer bytes from the inputfile to the outputfile
         byte[] buffer = new byte[1024];

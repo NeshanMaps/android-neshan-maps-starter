@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp.database_helper;
+package org.neshan.sample.starter.database_helper;
 
 import android.content.Context;
 import android.database.SQLException;

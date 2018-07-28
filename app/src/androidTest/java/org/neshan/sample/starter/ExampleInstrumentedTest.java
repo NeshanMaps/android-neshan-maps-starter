@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp;
+package org.neshan.sample.starter;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

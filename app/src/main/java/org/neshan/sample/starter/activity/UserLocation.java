@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp.activity;
+package org.neshan.sample.starter.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -18,7 +18,7 @@ import android.view.WindowManager;
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
 import org.neshan.layers.VectorElementLayer;
-import org.neshan.sample.starterapp.R;
+import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
 import org.neshan.styles.AnimationStyle;

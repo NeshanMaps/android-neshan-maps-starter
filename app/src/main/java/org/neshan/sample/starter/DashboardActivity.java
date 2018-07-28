@@ -1,21 +1,21 @@
-package org.neshan.sample.starterapp;
+package org.neshan.sample.starter;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import org.neshan.sample.starterapp.activity.AddMarker;
-import org.neshan.sample.starterapp.activity.ChangeCameraBearing;
-import org.neshan.sample.starterapp.activity.ChangeCameraTilt;
-import org.neshan.sample.starterapp.activity.ChangeStyle;
-import org.neshan.sample.starterapp.activity.DatabaseLayer;
-import org.neshan.sample.starterapp.activity.DrawLine;
-import org.neshan.sample.starterapp.activity.DrawPolygon;
-import org.neshan.sample.starterapp.activity.OnlineLayer;
-import org.neshan.sample.starterapp.activity.POILayer;
-import org.neshan.sample.starterapp.activity.TrafficLayer;
-import org.neshan.sample.starterapp.activity.UserLocation;
+import org.neshan.sample.starter.activity.AddMarker;
+import org.neshan.sample.starter.activity.ChangeCameraBearing;
+import org.neshan.sample.starter.activity.ChangeCameraTilt;
+import org.neshan.sample.starter.activity.ChangeStyle;
+import org.neshan.sample.starter.activity.DatabaseLayer;
+import org.neshan.sample.starter.activity.DrawLine;
+import org.neshan.sample.starter.activity.DrawPolygon;
+import org.neshan.sample.starter.activity.OnlineLayer;
+import org.neshan.sample.starter.activity.POILayer;
+import org.neshan.sample.starter.activity.TrafficLayer;
+import org.neshan.sample.starter.activity.UserLocation;
 
 public class DashboardActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package org.neshan.sample.starterapp.custom_view;
+package org.neshan.sample.starter.custom_view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.BlurMaskFilter;
@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.neshan.sample.starterapp.R;
+import org.neshan.sample.starter.R;
 
 public class CircularSeekBar extends View {
 

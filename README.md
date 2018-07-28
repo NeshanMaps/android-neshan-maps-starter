@@ -8,7 +8,6 @@
 
 توضیحات مربوط به هر یک از صفحات این اپلیکیشن در
 [ویکی](https://github.com/NeshanMaps/android-neshan-maps-starter/wiki)
-ویکی
 این پروژه موجود است.
 
 

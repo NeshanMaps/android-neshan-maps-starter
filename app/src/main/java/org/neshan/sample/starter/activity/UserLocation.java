@@ -1,19 +1,28 @@
 package org.neshan.sample.starter.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
@@ -31,12 +40,10 @@ import org.neshan.utils.BitmapUtils;
 import org.neshan.vectorelements.Marker;
 
 public class UserLocation extends AppCompatActivity {
+    private static final String TAG = UserLocation.class.getName();
+
     // used to track request permissions
     final int REQUEST_CODE = 123;
-    // Time between location updates (500 milliseconds or 0.5 seconds)
-    final long MIN_TIME = 500;
-    // Distance between location updates (1m)
-    final float MIN_DISTANCE = 1;
     // layer number in which map is added
     final int BASE_MAP_INDEX = 0;
 
@@ -46,12 +53,9 @@ public class UserLocation extends AppCompatActivity {
     // You can add some elements to a VectorElementLayer
     VectorElementLayer userMarkerLayer;
 
-    // Network provider
-    String LOCATION_PROVIDER = LocationManager.NETWORK_PROVIDER;
-    LocationManager locationManager;
-    LocationListener locationListener;
     // User's current location
     Location userLocation;
+    FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class UserLocation extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        getLocationPermission();
         // everything related to ui is initialized here
         initLayoutReferences();
     }
@@ -76,13 +81,14 @@ public class UserLocation extends AppCompatActivity {
         initViews();
         // Initializing mapView element
         initMap();
+        // Initializing user location
+        initLocation();
     }
 
     // We use findViewByID for every element in our layout file here
     private void initViews(){
         map = findViewById(R.id.map);
     }
-
 
     // Initializing map
     private void initMap(){
@@ -97,11 +103,51 @@ public class UserLocation extends AppCompatActivity {
         // Setting map focal position to a fixed position and setting camera zoom
         map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
         map.setZoom(14,0);
-
-        // getting user location
-        updateUserLocation();
     }
 
+    private void initLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    private boolean getLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                }, REQUEST_CODE);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        fusedLocationClient
+                .getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            onLocationChange(task.getResult());
+                            Log.i(TAG, "lat "+task.getResult().getLatitude()+" lng "+task.getResult().getLongitude());
+                        } else {
+                            Toast.makeText(UserLocation.this, "موقعیت یافت نشد.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void onLocationChange(Location location) {
+        this.userLocation = location;
+        addUserMarker(new LngLat(userLocation.getLongitude(), userLocation.getLatitude()));
+        map.setFocalPointPosition(
+                new LngLat(userLocation.getLongitude(), userLocation.getLatitude()),
+                0.25f);
+        map.setZoom(15, 0.25f);
+    }
 
     // This method gets a LngLat as input and adds a marker on that position
     private void addUserMarker(LngLat loc){
@@ -134,47 +180,7 @@ public class UserLocation extends AppCompatActivity {
         userMarkerLayer.add(marker);
     }
 
-    public void updateUserLocation(){
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                // when location of user changes, a marker will be added to new location
-                userLocation = location;
-                addUserMarker(new LngLat(userLocation.getLongitude(), userLocation.getLatitude()));
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE);
-            return;
-        }
-        locationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, locationListener);
-
-    }
-
     public void focusOnUserLocation(View view) {
-        if (userLocation != null) {
-            map.setFocalPointPosition(
-                    new LngLat(userLocation.getLongitude(), userLocation.getLatitude()),
-                    0.25f);
-            map.setZoom(15, 0.25f);
-        }
+        getLastLocation();
     }
 }

@@ -1,9 +1,11 @@
 package org.neshan.sample.starter;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import org.neshan.sample.starter.activity.AddMarker;
 import org.neshan.sample.starter.activity.ChangeCameraBearing;
@@ -16,6 +18,7 @@ import org.neshan.sample.starter.activity.OnlineLayer;
 import org.neshan.sample.starter.activity.POILayer;
 import org.neshan.sample.starter.activity.TrafficLayer;
 import org.neshan.sample.starter.activity.UserLocation;
+import org.w3c.dom.Text;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -23,6 +26,9 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        TextView appVersion = findViewById(R.id.app_version);
+        appVersion.setText(String.format("نسخه %s", BuildConfig.VERSION_NAME));
     }
 
     public void goToAddMarkerActivity(View view) {
@@ -78,5 +84,13 @@ public class DashboardActivity extends AppCompatActivity {
     public void goToDatabaseLayerActivity(View view) {
         Intent intent = new Intent(this, DatabaseLayer.class);
         startActivity(intent);
+    }
+
+    public void openNeshanLink(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://developer.neshan.org/")));
+    }
+
+    public void openGithubLink(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/NeshanMaps/android-neshan-maps-starter")));
     }
 }

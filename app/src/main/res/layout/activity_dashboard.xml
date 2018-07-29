@@ -37,6 +37,7 @@
             app:layout_constraintBottom_toBottomOf="@id/iv"/>
 
         <TextView
+            android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textPrimaryColor"
@@ -44,6 +45,16 @@
             android:text="زیرساخت توسعه‌ی نقشه"
             app:layout_constraintEnd_toStartOf="@id/iv"
             app:layout_constraintTop_toBottomOf="@id/tv1"/>
+
+        <TextView
+            android:id="@+id/app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textPrimaryColor"
+            android:textSize="12sp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv2"/>
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
@@ -519,6 +530,102 @@
                     android:gravity="center"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/item13"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:cardBackgroundColor="@color/textSecondaryColorInverse"
+            app:cardCornerRadius="8dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item11"
+            android:onClick="openNeshanLink">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_weight="99"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/accentColor"
+                    android:textSize="15sp"
+                    android:text="پلتفرم نشان"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="4dp"/>
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:tint="@color/accentColor"
+                    app:srcCompat="@drawable/ic_neshan_logo"
+                    android:layout_marginEnd="4dp"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/item14"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:cardBackgroundColor="@color/textSecondaryColorInverse"
+            app:cardCornerRadius="8dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item11"
+            android:onClick="openGithubLink">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_weight="99"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/accentColor"
+                    android:textSize="15sp"
+                    android:text="سورس کد"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="4dp"/>
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:tint="@color/accentColor"
+                    app:srcCompat="@drawable/ic_github"
+                    android:layout_marginEnd="4dp"/>
 
             </LinearLayout>
 

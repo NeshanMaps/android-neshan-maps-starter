@@ -86,6 +86,7 @@ public class DrawLine extends AppCompatActivity {
         LngLatVector lngLatVector = new LngLatVector();
         lngLatVector.add(new LngLat(51.327650, 35.769368));
         lngLatVector.add(new LngLat(51.323889, 35.756670));
+        lngLatVector.add(new LngLat(51.383889, 35.746670));
         // Creating a lineGeom from LngLatVector
         LineGeom lineGeom = new LineGeom(lngLatVector);
         // Creating a line from LineGeom. here we use getLineStyle() method to define line styles

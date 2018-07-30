@@ -66,6 +66,7 @@ public class AddMarker extends AppCompatActivity {
         map.setMapEventListener(new MapEventListener(){
             @Override
             public void onMapClicked(ClickData mapClickInfo){
+                super.onMapClicked(mapClickInfo);
                 if(mapClickInfo.getClickType() == ClickType.CLICK_TYPE_LONG) {
                     // by calling getClickPos(), we can get position of clicking (or tapping)
                     LngLat clickedLocation = mapClickInfo.getClickPos();

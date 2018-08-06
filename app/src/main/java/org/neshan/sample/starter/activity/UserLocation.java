@@ -2,14 +2,20 @@ package org.neshan.sample.starter.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +25,31 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
 import org.neshan.layers.VectorElementLayer;
+import org.neshan.sample.starter.BuildConfig;
 import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
@@ -39,6 +62,9 @@ import org.neshan.ui.MapView;
 import org.neshan.utils.BitmapUtils;
 import org.neshan.vectorelements.Marker;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class UserLocation extends AppCompatActivity {
     private static final String TAG = UserLocation.class.getName();
 
@@ -47,6 +73,13 @@ public class UserLocation extends AppCompatActivity {
     // layer number in which map is added
     final int BASE_MAP_INDEX = 0;
 
+    // location updates interval - 1 sec
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
+    // fastest updates interval - 1 sec
+    // location updates will be received if another app is requesting the locations
+    // than your app can handle
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
+
     // map UI element
     MapView map;
 
@@ -54,8 +87,16 @@ public class UserLocation extends AppCompatActivity {
     VectorElementLayer userMarkerLayer;
 
     // User's current location
-    Location userLocation;
-    FusedLocationProviderClient fusedLocationClient;
+    private Location userLocation;
+    private FusedLocationProviderClient fusedLocationClient;
+    private SettingsClient settingsClient;
+    private LocationRequest locationRequest;
+    private LocationSettingsRequest locationSettingsRequest;
+    private LocationCallback locationCallback;
+    private String lastUpdateTime;
+    // boolean flag to toggle the ui
+    private Boolean mRequestingLocationUpdates;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +111,22 @@ public class UserLocation extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getLocationPermission();
         // everything related to ui is initialized here
         initLayoutReferences();
+        initLocation();
+        startReceivingLocationUpdates();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        startLocationUpdates();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
     }
 
     // Initializing layout references (views, map and map events)
@@ -105,82 +159,192 @@ public class UserLocation extends AppCompatActivity {
         map.setZoom(14,0);
     }
 
+
     private void initLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-    }
+        settingsClient = LocationServices.getSettingsClient(this);
 
-    private boolean getLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                }, REQUEST_CODE);
-                return false;
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                // location is received
+                userLocation = locationResult.getLastLocation();
+                lastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+
+                onLocationChange();
             }
-        }
-        return true;
+        };
+
+        mRequestingLocationUpdates = false;
+
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        locationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(locationRequest);
+        locationSettingsRequest = builder.build();
+
     }
 
-    @SuppressLint("MissingPermission")
-    private void getLastLocation() {
-        fusedLocationClient
-                .getLastLocation()
-                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+
+    /**
+     * Starting location updates
+     * Check whether location settings are satisfied and then
+     * location updates will be requested
+     */
+    private void startLocationUpdates() {
+        settingsClient
+                .checkLocationSettings(locationSettingsRequest)
+                .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                    @SuppressLint("MissingPermission")
                     @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            onLocationChange(task.getResult());
-                            Log.i(TAG, "lat "+task.getResult().getLatitude()+" lng "+task.getResult().getLongitude());
-                        } else {
-                            Toast.makeText(UserLocation.this, "موقعیت یافت نشد.", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                        Log.i(TAG, "All location settings are satisfied.");
+
+                        //noinspection MissingPermission
+                        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+
+                        onLocationChange();
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        int statusCode = ((ApiException) e).getStatusCode();
+                        switch (statusCode) {
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                                Log.i(TAG, "Location settings are not satisfied. Attempting to upgrade " +
+                                        "location settings ");
+                                try {
+                                    // Show the dialog by calling startResolutionForResult(), and check the
+                                    // result in onActivityResult().
+                                    ResolvableApiException rae = (ResolvableApiException) e;
+                                    rae.startResolutionForResult(UserLocation.this, REQUEST_CODE);
+                                } catch (IntentSender.SendIntentException sie) {
+                                    Log.i(TAG, "PendingIntent unable to execute request.");
+                                }
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                String errorMessage = "Location settings are inadequate, and cannot be " +
+                                        "fixed here. Fix in Settings.";
+                                Log.e(TAG, errorMessage);
+
+                                Toast.makeText(UserLocation.this, errorMessage, Toast.LENGTH_LONG).show();
                         }
+
+                        onLocationChange();
                     }
                 });
     }
 
-    private void onLocationChange(Location location) {
-        this.userLocation = location;
-        addUserMarker(new LngLat(userLocation.getLongitude(), userLocation.getLatitude()));
-        map.setFocalPointPosition(
-                new LngLat(userLocation.getLongitude(), userLocation.getLatitude()),
-                0.25f);
-        map.setZoom(15, 0.25f);
+    public void stopLocationUpdates() {
+        // Removing location updates
+        fusedLocationClient
+                .removeLocationUpdates(locationCallback)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "Location updates stopped!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
+
+    public void startReceivingLocationUpdates() {
+        // Requesting ACCESS_FINE_LOCATION using Dexter library
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        mRequestingLocationUpdates = true;
+                        startLocationUpdates();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            // open device settings when the permission is
+                            // denied permanently
+                            openSettings();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+
+                }).check();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            // Check for the integer request code originally supplied to startResolutionForResult().
+            case REQUEST_CODE:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        Log.e(TAG, "User agreed to make required location settings changes.");
+                        // Nothing to do. startLocationupdates() gets called in onResume again.
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Log.e(TAG, "User chose not to make required location settings changes.");
+                        mRequestingLocationUpdates = false;
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void openSettings() {
+        Intent intent = new Intent();
+        intent.setAction(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package",
+                BuildConfig.APPLICATION_ID, null);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+
+    private void onLocationChange() {
+        if(userLocation != null) {
+            addUserMarker(new LngLat(userLocation.getLongitude(), userLocation.getLatitude()));
+        }
+    }
+
 
     // This method gets a LngLat as input and adds a marker on that position
     private void addUserMarker(LngLat loc){
         // First, we should clear previous user marker on map
         userMarkerLayer.clear();
 
-        // Creating animation for marker. We should use an object of type AnimationStyleBuilder, set
-        // all animation features on it and then call buildStyle() method that returns an object of type
-        // AnimationStyle
-        AnimationStyleBuilder animStBl = new AnimationStyleBuilder();
-        animStBl.setFadeAnimationType(AnimationType.ANIMATION_TYPE_SMOOTHSTEP);
-        animStBl.setSizeAnimationType(AnimationType.ANIMATION_TYPE_SPRING);
-        animStBl.setPhaseInDuration(0.5f);
-        animStBl.setPhaseOutDuration(0.5f);
-        AnimationStyle animSt = animStBl.buildStyle();
-
         // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
         // and then call buildStyle method on it. This method returns an object of type MarkerStyle
         MarkerStyleCreator markStCr = new MarkerStyleCreator();
         markStCr.setSize(20f);
         markStCr.setBitmap(BitmapUtils.createBitmapFromAndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)));
-        // AnimationStyle object - that was created before - is used here
-        markStCr.setAnimationStyle(animSt);
         MarkerStyle markSt = markStCr.buildStyle();
 
         // Creating user marker
         Marker marker = new Marker(loc, markSt);
+
+        // Clearing userMarkerLayer
+        userMarkerLayer.clear();
 
         // Adding user marker to userMarkerLayer, or showing marker on map!
         userMarkerLayer.add(marker);
     }
 
     public void focusOnUserLocation(View view) {
-        getLastLocation();
+        if(userLocation != null) {
+            map.setFocalPointPosition(
+                    new LngLat(userLocation.getLongitude(), userLocation.getLatitude()), 0.25f);
+            map.setZoom(15, 0.25f);
+        }
     }
 }

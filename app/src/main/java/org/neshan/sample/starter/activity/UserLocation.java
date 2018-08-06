@@ -113,6 +113,7 @@ public class UserLocation extends AppCompatActivity {
         super.onStart();
         // everything related to ui is initialized here
         initLayoutReferences();
+        // Initializing user location
         initLocation();
         startReceivingLocationUpdates();
     }
@@ -135,8 +136,6 @@ public class UserLocation extends AppCompatActivity {
         initViews();
         // Initializing mapView element
         initMap();
-        // Initializing user location
-        initLocation();
     }
 
     // We use findViewByID for every element in our layout file here
@@ -320,9 +319,6 @@ public class UserLocation extends AppCompatActivity {
 
     // This method gets a LngLat as input and adds a marker on that position
     private void addUserMarker(LngLat loc){
-        // First, we should clear previous user marker on map
-        userMarkerLayer.clear();
-
         // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
         // and then call buildStyle method on it. This method returns an object of type MarkerStyle
         MarkerStyleCreator markStCr = new MarkerStyleCreator();

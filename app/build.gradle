@@ -49,4 +49,7 @@ dependencies {
     implementation 'neshan-android-sdk:mobile-sdk:0.9.3'
     // dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

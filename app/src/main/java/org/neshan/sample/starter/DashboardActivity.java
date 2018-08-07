@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import org.neshan.sample.starter.activity.APIRetrofit;
 import org.neshan.sample.starter.activity.AddMarker;
 import org.neshan.sample.starter.activity.ChangeCameraBearing;
 import org.neshan.sample.starter.activity.ChangeCameraTilt;
@@ -18,7 +19,6 @@ import org.neshan.sample.starter.activity.OnlineLayer;
 import org.neshan.sample.starter.activity.POILayer;
 import org.neshan.sample.starter.activity.TrafficLayer;
 import org.neshan.sample.starter.activity.UserLocation;
-import org.w3c.dom.Text;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -83,6 +83,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToDatabaseLayerActivity(View view) {
         Intent intent = new Intent(this, DatabaseLayer.class);
+        startActivity(intent);
+    }
+
+    public void goToAPIRetrofitActivity(View view) {
+        Intent intent = new Intent(this, APIRetrofit.class);
         startActivity(intent);
     }
 

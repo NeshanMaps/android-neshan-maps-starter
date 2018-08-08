@@ -7,7 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Url;
 
-
 public interface GetDataService {
 
     // TODO: replace "YOUR_API_KEY" with your api key

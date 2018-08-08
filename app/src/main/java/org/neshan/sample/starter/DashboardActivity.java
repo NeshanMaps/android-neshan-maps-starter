@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.neshan.sample.starter.activity.APIRetrofit;
+import org.neshan.sample.starter.activity.APIVolley;
 import org.neshan.sample.starter.activity.AddMarker;
 import org.neshan.sample.starter.activity.ChangeCameraBearing;
 import org.neshan.sample.starter.activity.ChangeCameraTilt;
@@ -88,6 +89,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToAPIRetrofitActivity(View view) {
         Intent intent = new Intent(this, APIRetrofit.class);
+        startActivity(intent);
+    }
+
+    public void goToAPIVolleyActivity(View view) {
+        Intent intent = new Intent(this, APIVolley.class);
         startActivity(intent);
     }
 

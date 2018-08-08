@@ -10,6 +10,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
 import org.neshan.layers.VectorElementLayer;
@@ -31,11 +38,14 @@ import org.neshan.ui.MapView;
 import org.neshan.utils.BitmapUtils;
 import org.neshan.vectorelements.Marker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class APIRetrofit extends AppCompatActivity {
+public class APIVolley extends AppCompatActivity {
 
     // layer number in which map is added
     final int BASE_MAP_INDEX = 0;
@@ -65,7 +75,7 @@ public class APIRetrofit extends AppCompatActivity {
         // starting app in full screen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_api_retrofit);
+        setContentView(R.layout.activity_api_volley);
     }
 
     @Override
@@ -166,39 +176,53 @@ public class APIRetrofit extends AppCompatActivity {
 
 
     private void neshanReverseAPI(LngLat loc) {
-        GetDataService retrofitService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         String requestURL = "https://api.neshan.org/v1/reverse?lat=" + loc.getY() + "&lng=" + loc.getX();
         final String latLngAddr = String.format("%.6f", loc.getY()) + "," + String.format("%.6f", loc.getX());
 
-        Call<NeshanAddress> call = retrofitService.getNeshanAddress(requestURL);
-        call.enqueue(new Callback<NeshanAddress>() {
-            @Override
-            public void onResponse(Call<NeshanAddress> call, Response<NeshanAddress> response) {
-                if (response.code() == 200) {
-                    if (response.body().getCode() == null) {
-                        // if code is null in answer. By checking 2 kind of answers
-                        neshanAddress = response.body();
-                        addressTitle.setText(neshanAddress.getNeighbourhood());
-                        addressDetails.setText(neshanAddress.getAddress());
-                    } else {
-                        addressTitle.setText("آدرس نامشخص");
-                        addressDetails.setText(latLngAddr);
-                    }
-                }
+        StringRequest reverseGeoSearchRequest = new StringRequest(
+                Request.Method.GET,
+                requestURL,
+                new com.android.volley.Response.Listener<String>() {
 
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-                        Log.d("neshanAddress", "expanded");
-                        reverseBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    }
-                });
-            }
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            String neighbourhood = obj.getString("neighbourhood");
+                            String address = obj.getString("address");
 
+                            // if server was able to return neighbourhood and address to us
+                            if(!neighbourhood.equals("null") && !address.equals("null")) {
+                                addressTitle.setText(neighbourhood);
+                                addressDetails.setText(address);
+                            }
+                            else{
+                                addressTitle.setText("آدرس نامشخص");
+                                addressDetails.setText(latLngAddr);
+                            }
+
+                        } catch (Exception e) {
+
+                            addressTitle.setText("آدرس نامشخص");
+                            addressDetails.setText(latLngAddr);
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
             @Override
-            public void onFailure(Call<NeshanAddress> call, Throwable t) {
-                Log.d("neshanAddress", "failure");
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<>();
+                // TODO: replace "YOUR_API_KEY" with your api key
+                params.put("Api-Key", "YOUR_API_KEY");
+                return params;
+            }
+        };
+
+        // Add the request to the queue
+        Volley.newRequestQueue(this).add(reverseGeoSearchRequest);
     }
 }

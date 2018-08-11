@@ -54,4 +54,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     //Volley
     implementation 'com.android.volley:volley:1.0.0'
+    //OKHTTP
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 }

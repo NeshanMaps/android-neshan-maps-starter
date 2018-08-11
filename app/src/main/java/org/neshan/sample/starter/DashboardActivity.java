@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import org.neshan.sample.starter.activity.APIOkHttp;
 import org.neshan.sample.starter.activity.APIRetrofit;
 import org.neshan.sample.starter.activity.APIVolley;
 import org.neshan.sample.starter.activity.AddMarker;
@@ -94,6 +95,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToAPIVolleyActivity(View view) {
         Intent intent = new Intent(this, APIVolley.class);
+        startActivity(intent);
+    }
+
+    public void goToAPIOkHttpActivity(View view) {
+        Intent intent = new Intent(this, APIOkHttp.class);
         startActivity(intent);
     }
 

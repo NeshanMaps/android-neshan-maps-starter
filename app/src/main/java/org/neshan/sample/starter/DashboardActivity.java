@@ -11,6 +11,7 @@ import org.neshan.sample.starter.activity.APIOkHttp;
 import org.neshan.sample.starter.activity.APIRetrofit;
 import org.neshan.sample.starter.activity.APIVolley;
 import org.neshan.sample.starter.activity.AddMarker;
+import org.neshan.sample.starter.activity.Cache;
 import org.neshan.sample.starter.activity.ChangeCameraBearing;
 import org.neshan.sample.starter.activity.ChangeCameraTilt;
 import org.neshan.sample.starter.activity.ChangeStyle;
@@ -100,6 +101,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToAPIOkHttpActivity(View view) {
         Intent intent = new Intent(this, APIOkHttp.class);
+        startActivity(intent);
+    }
+
+    public void goToCacheActivity(View view) {
+        Intent intent = new Intent(this, Cache.class);
         startActivity(intent);
     }
 

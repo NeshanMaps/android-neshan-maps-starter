@@ -78,12 +78,12 @@ public class DatabaseLayer extends AppCompatActivity {
     }
 
     // We use findViewByID for every element in our layout file here
-    private void initViews(){
+    private void initViews() {
         map = findViewById(R.id.map);
     }
 
     // Initializing map
-    private void initMap(){
+    private void initMap() {
         // Creating a VectorElementLayer(called markerLayer) to add all markers to it and adding it to map's layers
         markerLayer = NeshanServices.createVectorElementLayer();
 
@@ -92,13 +92,13 @@ public class DatabaseLayer extends AppCompatActivity {
         map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
 
         // Setting map focal position to a fixed position and setting camera zoom
-        map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
-        map.setZoom(14,0);
+        map.setFocalPointPosition(new LngLat(51.330743, 35.767234), 0);
+        map.setZoom(14, 0);
     }
 
 
     // copy database.sqlite file from asset folder to /data/data/... and read points and add marker on map
-    private void getDBPoints(){
+    private void getDBPoints() {
         // we create an AssetDatabaseHelper object, create a new database in mobile storage
         // and copy database.sqlite file into the new created database
         // Then we open the database and return the SQLiteDatabase object
@@ -106,21 +106,19 @@ public class DatabaseLayer extends AppCompatActivity {
 
         try {
             myDbHelper.createDataBase();
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             throw new Error("Unable to create database");
         }
 
         try {
             pointsDB = myDbHelper.openDataBase();
-        }
-        catch(SQLException sqle){
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
 
 
         // creating a cursor and query all rows of points table
-        Cursor cursor = pointsDB.rawQuery("select * from points",null);
+        Cursor cursor = pointsDB.rawQuery("select * from points", null);
 
         //reading all points and adding a marker for each one
         if (cursor.moveToFirst()) {
@@ -135,7 +133,7 @@ public class DatabaseLayer extends AppCompatActivity {
             while (!cursor.isAfterLast()) {
                 double lng = cursor.getDouble(cursor.getColumnIndex("lng"));
                 double lat = cursor.getDouble(cursor.getColumnIndex("lat"));
-                Log.i("POINTS", "getDBPoints: "+lat+" "+lng);
+                Log.i("POINTS", "getDBPoints: " + lat + " " + lng);
                 LngLat lngLat = new LngLat(lng, lat);
 
                 // validating min and max
@@ -160,24 +158,24 @@ public class DatabaseLayer extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
-                                    map.moveToCameraBounds(
-                    new Bounds(new LngLat(finalMinLng, finalMinLat), new LngLat(finalMaxLng, finalMaxLat)),
-                    new ViewportBounds(
-                            new ViewportPosition(0,0),
-                            new ViewportPosition(map.getWidth(),map.getHeight())
-                    ),
-                    true, 0.25f);
+                        map.moveToCameraBounds(
+                                new Bounds(new LngLat(finalMinLng, finalMinLat), new LngLat(finalMaxLng, finalMaxLat)),
+                                new ViewportBounds(
+                                        new ViewportPosition(0, 0),
+                                        new ViewportPosition(map.getWidth(), map.getHeight())
+                                ),
+                                true, 0.25f);
                     }
                 }
             }).start();
-            Log.i("BOUND", "getDBPoints: "+minLat+" "+minLng+"----"+maxLat+" "+maxLng);
+            Log.i("BOUND", "getDBPoints: " + minLat + " " + minLng + "----" + maxLat + " " + maxLng);
         }
         cursor.close();
     }
 
 
     // This method gets a LngLat as input and adds a marker on that position
-    private void addMarker(LngLat loc){
+    private void addMarker(LngLat loc) {
         // Creating animation for marker. We should use an object of type AnimationStyleBuilder, set
         // all animation features on it and then call buildStyle() method that returns an object of type
         // AnimationStyle

@@ -46,7 +46,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     //Neshan sdk library
-    implementation 'neshan-android-sdk:mobile-sdk:0.9.3'
+    implementation 'neshan-android-sdk:mobile-sdk:0.9.4'
     // dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'
     //Retrofit

@@ -3,11 +3,13 @@ package org.neshan.sample.starter.activity;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
+import org.neshan.layers.Layer;
 import org.neshan.layers.VectorElementLayer;
 import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
@@ -91,7 +93,8 @@ public class AddMarker extends AppCompatActivity {
 
         // add Standard_day map to layer BASE_MAP_INDEX
         map.getOptions().setZoomRange(new Range(4.5f, 18f));
-        map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
+        Layer baseMap = NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY,getCacheDir()+"/baseMap",10);
+        map.getLayers().insert(BASE_MAP_INDEX, baseMap);
 
         // Setting map focal position to a fixed position and setting camera zoom
         map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );

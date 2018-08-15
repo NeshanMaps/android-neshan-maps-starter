@@ -69,11 +69,16 @@
         <activity
             android:name=".activity.APIVolley"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.APIOkHttp"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.Cache"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"

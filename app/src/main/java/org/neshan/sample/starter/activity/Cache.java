@@ -17,15 +17,12 @@ import org.neshan.ui.MapView;
 
 public class Cache extends AppCompatActivity {
 
-    // layer number in which map is added
+    // layer number in which map and POI are added
     final int BASE_MAP_INDEX = 0;
     final int POI_INDEX = 1;
 
     // map UI element
     MapView map;
-
-    // You can add some elements to a VectorElementLayer
-    VectorElementLayer markerLayer;
 
 
     @Override
@@ -61,10 +58,6 @@ public class Cache extends AppCompatActivity {
 
     // Initializing map
     private void initMap(){
-        // Creating a VectorElementLayer(called markerLayer) to add all markers to it and adding it to map's layers
-        markerLayer = NeshanServices.createVectorElementLayer();
-        map.getLayers().add(markerLayer);
-
         // add Standard_day map to layer BASE_MAP_INDEX
         map.getOptions().setZoomRange(new Range(4.5f, 18f));
 

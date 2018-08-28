@@ -5,8 +5,8 @@ android {
     defaultConfig {
         applicationId "org.neshan.sample.starter"
         minSdkVersion 19
-        versionCode 2
-        versionName "1.1.0"
+        versionCode 3
+        versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters 'armeabi-v7a'
@@ -46,7 +46,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     //Neshan sdk library
-    implementation 'neshan-android-sdk:mobile-sdk:0.9.4'
+    implementation 'neshan-android-sdk:mobile-sdk:0.9.5'
     // dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'
     //Retrofit

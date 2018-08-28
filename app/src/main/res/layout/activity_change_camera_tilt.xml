@@ -12,6 +12,26 @@
         android:layout_height="match_parent"
         android:id="@+id/map"/>
 
+    <ToggleButton
+        android:checked="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/toggle_button_text_color"
+        android:textOff="تغییر زاویه دوربین"
+        android:textOn="تغییر زاویه دوربین"
+        android:elevation="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:drawableStart="@drawable/ic_change_tilt"
+        android:drawableTint="@color/toggle_button_text_color"
+        android:drawablePadding="8dp"
+        android:background="@drawable/toggle_button_bg"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:targetApi="m"
+        android:onClick="toggleCameraTilt"/>
 
     <LinearLayout
         android:layout_width="300dp"

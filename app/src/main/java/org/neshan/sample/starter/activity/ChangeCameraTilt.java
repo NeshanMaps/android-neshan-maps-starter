@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.neshan.core.LngLat;
 import org.neshan.core.LngLatVector;
@@ -36,6 +37,8 @@ public class ChangeCameraTilt extends AppCompatActivity {
     MapView map;
     // camera tilt control
     SeekBar tiltSeekBar;
+
+    boolean isCameraTiltEnable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,5 +123,16 @@ public class ChangeCameraTilt extends AppCompatActivity {
         // Setting map focal position to a fixed position and setting camera zoom
         map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
         map.setZoom(14,0);
+    }
+
+    public void toggleCameraTilt(View view) {
+        ToggleButton toggleButton = (ToggleButton) view;
+        isCameraTiltEnable = !isCameraTiltEnable;
+        if (toggleButton.isChecked())
+            //set tilt range from 30 to 90 degrees
+            map.getOptions().setTiltRange(new Range(30, 90));
+        else
+            //set tilt range to 1 degree (only current tilt degree)
+            map.getOptions().setTiltRange(new Range(map.getTilt(), map.getTilt()));
     }
 }

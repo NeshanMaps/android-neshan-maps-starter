@@ -2,8 +2,10 @@ package org.neshan.sample.starter.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ToggleButton;
 
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
@@ -27,6 +29,9 @@ public class ChangeCameraBearing extends AppCompatActivity {
 
     // variable that hold camera bearing
     float cameraBearing;
+
+    boolean isCameraRotationEnable = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,4 +115,12 @@ public class ChangeCameraBearing extends AppCompatActivity {
         map.setZoom(14, 0);
     }
 
+    public void toggleCameraRotation(View view) {
+        ToggleButton toggleButton = (ToggleButton) view;
+        isCameraRotationEnable = !isCameraRotationEnable;
+        if (toggleButton.isChecked())
+            map.getOptions().setRotatable(true);
+        else
+            map.getOptions().setRotatable(false);
+    }
 }

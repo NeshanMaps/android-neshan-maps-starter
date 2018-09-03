@@ -78,7 +78,6 @@
             android:name=".activity.Cache"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -89,6 +88,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.AddLabel"></activity>
     </application>
 
 </manifest>

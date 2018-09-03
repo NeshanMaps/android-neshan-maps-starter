@@ -18,6 +18,7 @@ import org.neshan.sample.starter.activity.ChangeStyle;
 import org.neshan.sample.starter.activity.DatabaseLayer;
 import org.neshan.sample.starter.activity.DrawLine;
 import org.neshan.sample.starter.activity.DrawPolygon;
+import org.neshan.sample.starter.activity.AddLabel;
 import org.neshan.sample.starter.activity.OnlineLayer;
 import org.neshan.sample.starter.activity.POILayer;
 import org.neshan.sample.starter.activity.TrafficLayer;
@@ -106,6 +107,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToCacheActivity(View view) {
         Intent intent = new Intent(this, Cache.class);
+        startActivity(intent);
+    }
+
+    public void goToLabelActivity(View view) {
+        Intent intent = new Intent(this, AddLabel.class);
         startActivity(intent);
     }
 

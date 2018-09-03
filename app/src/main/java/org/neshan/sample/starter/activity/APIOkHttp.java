@@ -34,6 +34,7 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.CertificatePinner;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -170,7 +171,16 @@ public class APIOkHttp extends AppCompatActivity {
         String requestURL = "https://api.neshan.org/v1/reverse?lat=" + loc.getY() + "&lng=" + loc.getX();
         final String latLngAddr = String.format("%.6f", loc.getY()) + "," + String.format("%.6f", loc.getX());
 
-        OkHttpClient client = new OkHttpClient();
+        // creating a CertificatePinner object and adding public key of neshan.org to it
+        CertificatePinner certPinner = new CertificatePinner.Builder()
+                .add("*.neshan.org",
+                        "sha256/Cyg7e5STKgZCwdABdPZlqO5lQWSE0KbWr624HoIUuUc=")
+                .build();
+
+        // adding the created certPinner to OkHttpClient
+        OkHttpClient client = new OkHttpClient.Builder()
+                .certificatePinner(certPinner)
+                .build();
 
         Request request = new Request.Builder()
                 //TODO: replace "YOUR_API_KEY" with your api key

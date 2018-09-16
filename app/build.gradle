@@ -8,9 +8,9 @@ android {
         versionCode 3
         versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
+//        ndk {
+//            abiFilters 'armeabi-v7a'
+//        }
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

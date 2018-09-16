@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
 import org.neshan.layers.Layer;
+import org.neshan.layers.VectorElementEventListener;
 import org.neshan.layers.VectorElementLayer;
+import org.neshan.layers.VectorLayer;
 import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
@@ -21,10 +24,13 @@ import org.neshan.styles.MarkerStyle;
 import org.neshan.styles.MarkerStyleCreator;
 import org.neshan.ui.ClickData;
 import org.neshan.ui.ClickType;
+import org.neshan.ui.ElementClickData;
 import org.neshan.ui.MapEventListener;
 import org.neshan.ui.MapView;
 import org.neshan.utils.BitmapUtils;
 import org.neshan.vectorelements.Marker;
+
+import java.util.Vector;
 
 public class AddMarker extends AppCompatActivity {
 
@@ -36,6 +42,9 @@ public class AddMarker extends AppCompatActivity {
 
     // You can add some elements to a VectorElementLayer
     VectorElementLayer markerLayer;
+
+    // Marker that will be added on map
+    Marker marker;
 
 
     @Override
@@ -65,11 +74,11 @@ public class AddMarker extends AppCompatActivity {
         // when long clicked on map, a marker is added in clicked location
         // MapEventListener gets all events on map, including single tap, double tap, long press, etc
         // we should check event type by calling getClickType() on mapClickInfo (from ClickData class)
-        map.setMapEventListener(new MapEventListener(){
+        map.setMapEventListener(new MapEventListener() {
             @Override
-            public void onMapClicked(ClickData mapClickInfo){
+            public void onMapClicked(ClickData mapClickInfo) {
                 super.onMapClicked(mapClickInfo);
-                if(mapClickInfo.getClickType() == ClickType.CLICK_TYPE_LONG) {
+                if (mapClickInfo.getClickType() == ClickType.CLICK_TYPE_LONG) {
                     // by calling getClickPos(), we can get position of clicking (or tapping)
                     LngLat clickedLocation = mapClickInfo.getClickPos();
                     // addMarker adds a marker (pretty self explanatory :D) to the clicked location
@@ -80,30 +89,30 @@ public class AddMarker extends AppCompatActivity {
     }
 
     // We use findViewByID for every element in our layout file here
-    private void initViews(){
+    private void initViews() {
         map = findViewById(R.id.map);
     }
 
 
     // Initializing map
-    private void initMap(){
+    private void initMap() {
         // Creating a VectorElementLayer(called markerLayer) to add all markers to it and adding it to map's layers
         markerLayer = NeshanServices.createVectorElementLayer();
         map.getLayers().add(markerLayer);
 
         // add Standard_day map to layer BASE_MAP_INDEX
         map.getOptions().setZoomRange(new Range(4.5f, 18f));
-        Layer baseMap = NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY,getCacheDir()+"/baseMap",10);
+        Layer baseMap = NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY, getCacheDir() + "/baseMap", 10);
         map.getLayers().insert(BASE_MAP_INDEX, baseMap);
 
         // Setting map focal position to a fixed position and setting camera zoom
-        map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
-        map.setZoom(14,0);
+        map.setFocalPointPosition(new LngLat(51.330743, 35.767234), 0);
+        map.setZoom(14, 0);
     }
 
 
     // This method gets a LngLat as input and adds a marker on that position
-    private void addMarker(LngLat loc){
+    private void addMarker(LngLat loc) {
         // First, we should clear every marker that is currently located on map
         markerLayer.clear();
 
@@ -127,9 +136,19 @@ public class AddMarker extends AppCompatActivity {
         MarkerStyle markSt = markStCr.buildStyle();
 
         // Creating marker
-        Marker marker = new Marker(loc, markSt);
+        marker = new Marker(loc, markSt);
 
         // Adding marker to markerLayer, or showing marker on map!
         markerLayer.add(marker);
+
+        markerLayer.setVectorElementEventListener(new VectorElementEventListener() {
+                                                                      @Override
+                                                                      public boolean onVectorElementClicked(ElementClickData clickInfo) {
+                                                                          markerLayer.remove(marker);
+                                                                          return true;
+                                                                      }
+
+                                                                  }
+        );
     }
 }

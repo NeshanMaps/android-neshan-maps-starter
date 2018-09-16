@@ -87,11 +87,11 @@ public class APIOkHttp extends AppCompatActivity {
         // when long clicked on map, a marker is added in clicked location
         // MapEventListener gets all events on map, including single tap, double tap, long press, etc
         // we should check event type by calling getClickType() on mapClickInfo (from ClickData class)
-        map.setMapEventListener(new MapEventListener(){
+        map.setMapEventListener(new MapEventListener() {
             @Override
-            public void onMapClicked(ClickData mapClickInfo){
+            public void onMapClicked(ClickData mapClickInfo) {
                 super.onMapClicked(mapClickInfo);
-                if(mapClickInfo.getClickType() == ClickType.CLICK_TYPE_LONG) {
+                if (mapClickInfo.getClickType() == ClickType.CLICK_TYPE_LONG) {
                     // by calling getClickPos(), we can get position of clicking (or tapping)
                     LngLat clickedLocation = mapClickInfo.getClickPos();
                     // addMarker adds a marker (pretty self explanatory :D) to the clicked location
@@ -105,7 +105,7 @@ public class APIOkHttp extends AppCompatActivity {
     }
 
     // We use findViewByID for every element in our layout file here
-    private void initViews(){
+    private void initViews() {
         map = findViewById(R.id.map);
 
         // UI elements in bottom sheet
@@ -120,7 +120,7 @@ public class APIOkHttp extends AppCompatActivity {
 
 
     // Initializing map
-    private void initMap(){
+    private void initMap() {
         // Creating a VectorElementLayer(called markerLayer) to add all markers to it and adding it to map's layers
         markerLayer = NeshanServices.createVectorElementLayer();
         map.getLayers().add(markerLayer);
@@ -130,13 +130,13 @@ public class APIOkHttp extends AppCompatActivity {
         map.getLayers().insert(BASE_MAP_INDEX, NeshanServices.createBaseMap(NeshanMapStyle.STANDARD_DAY));
 
         // Setting map focal position to a fixed position and setting camera zoom
-        map.setFocalPointPosition(new LngLat(51.330743, 35.767234),0 );
-        map.setZoom(14,0);
+        map.setFocalPointPosition(new LngLat(51.330743, 35.767234), 0);
+        map.setZoom(14, 0);
     }
 
 
     // This method gets a LngLat as input and adds a marker on that position
-    private void addMarker(LngLat loc){
+    private void addMarker(LngLat loc) {
         // First, we should clear every marker that is currently located on map
         markerLayer.clear();
 
@@ -213,18 +213,16 @@ public class APIOkHttp extends AppCompatActivity {
 
 
                         // if server was able to return neighbourhood and address to us
-                        if(neighbourhood.equals("null") && address.equals("null")) {
+                        if (neighbourhood.equals("null") && address.equals("null")) {
                             neighbourhood = "آدرس نامشخص";
                             address = latLngAddr;
                         }
 
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         Log.d("nehsnaReverse", Log.getStackTraceString(e));
                         neighbourhood = "آدرس نامشخص";
                         address = latLngAddr;
-                    }
-                    finally {
+                    } finally {
 
                         final String fNeighbourhood = neighbourhood;
                         final String fAddrees = address;

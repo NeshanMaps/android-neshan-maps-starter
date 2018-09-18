@@ -118,7 +118,7 @@ public class AddMarker extends AppCompatActivity {
 
     // This method gets a LngLat as input and adds a marker on that position
     private void addMarker(LngLat loc, long id) {
-        // First, we should clear every marker that is currently located on map
+        // If you want to have only one marker on map at a time, uncomment next line to delete all markers before adding a new marker
 //        markerLayer.clear();
 
         // Creating animation for marker. We should use an object of type AnimationStyleBuilder, set
@@ -142,16 +142,17 @@ public class AddMarker extends AppCompatActivity {
 
         // Creating marker
         marker = new Marker(loc, markSt);
+        // Setting a metadata on marker, here we have an id for each marker
         marker.setMetaDataElement("id", new Variant(id));
 
         // Adding marker to markerLayer, or showing marker on map!
         markerLayer.add(marker);
 
-
+        //handling events on markerLayer
         markerLayer.setVectorElementEventListener(new VectorElementEventListener() {
                                                       @Override
                                                       public boolean onVectorElementClicked(ElementClickData clickInfo) {
-                                                          //
+                                                          // If a double click happens on a marker...
                                                           if (clickInfo.getClickType() == ClickType.CLICK_TYPE_DOUBLE) {
                                                               final long removeId = clickInfo.getVectorElement().getMetaDataElement("id").getLong();
                                                               runOnUiThread(new Runnable() {
@@ -160,9 +161,12 @@ public class AddMarker extends AppCompatActivity {
                                                                       Toast.makeText(AddMarker.this, "نشانگر شماره " + removeId + " حذف شد!", Toast.LENGTH_SHORT).show();
                                                                   }
                                                               });
+                                                              //getting marker reference from clickInfo and remove that marker from markerLayer
                                                               markerLayer.remove(clickInfo.getVectorElement());
 
+                                                              // If a single click happens...
                                                           } else if (clickInfo.getClickType() == ClickType.CLICK_TYPE_SINGLE) {
+                                                              // changing marker to blue
                                                               changeMarkerToBlue((Marker)clickInfo.getVectorElement());
                                                           }
                                                           return true;
@@ -176,10 +180,12 @@ public class AddMarker extends AppCompatActivity {
         // create new marker style
         MarkerStyleCreator markStCr = new MarkerStyleCreator();
         markStCr.setSize(20f);
+        // Setting a new bitmap as marker
         markStCr.setBitmap(BitmapUtils.createBitmapFromAndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker_blue)));
         markStCr.setAnimationStyle(animSt);
         MarkerStyle blueMarkSt = markStCr.buildStyle();
 
+        // changing marker style using setStyle
         redMarker.setStyle(blueMarkSt);
     }
 }

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import org.neshan.core.LngLat;
 import org.neshan.core.Range;
+import org.neshan.core.Variant;
 import org.neshan.layers.Layer;
 import org.neshan.layers.VectorElementEventListener;
 import org.neshan.layers.VectorElementLayer;
@@ -39,12 +40,14 @@ public class AddMarker extends AppCompatActivity {
 
     // map UI element
     MapView map;
-
     // You can add some elements to a VectorElementLayer
     VectorElementLayer markerLayer;
-
     // Marker that will be added on map
     Marker marker;
+    // an id for each marker
+    long markerId = 0;
+    // marker animation style
+    AnimationStyle animSt;
 
 
     @Override
@@ -82,7 +85,9 @@ public class AddMarker extends AppCompatActivity {
                     // by calling getClickPos(), we can get position of clicking (or tapping)
                     LngLat clickedLocation = mapClickInfo.getClickPos();
                     // addMarker adds a marker (pretty self explanatory :D) to the clicked location
-                    addMarker(clickedLocation);
+                    addMarker(clickedLocation, markerId);
+                    // increment id
+                    markerId++;
                 }
             }
         });
@@ -112,9 +117,9 @@ public class AddMarker extends AppCompatActivity {
 
 
     // This method gets a LngLat as input and adds a marker on that position
-    private void addMarker(LngLat loc) {
+    private void addMarker(LngLat loc, long id) {
         // First, we should clear every marker that is currently located on map
-        markerLayer.clear();
+//        markerLayer.clear();
 
         // Creating animation for marker. We should use an object of type AnimationStyleBuilder, set
         // all animation features on it and then call buildStyle() method that returns an object of type
@@ -124,7 +129,7 @@ public class AddMarker extends AppCompatActivity {
         animStBl.setSizeAnimationType(AnimationType.ANIMATION_TYPE_SPRING);
         animStBl.setPhaseInDuration(0.5f);
         animStBl.setPhaseOutDuration(0.5f);
-        AnimationStyle animSt = animStBl.buildStyle();
+        animSt = animStBl.buildStyle();
 
         // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
         // and then call buildStyle method on it. This method returns an object of type MarkerStyle
@@ -137,18 +142,44 @@ public class AddMarker extends AppCompatActivity {
 
         // Creating marker
         marker = new Marker(loc, markSt);
+        marker.setMetaDataElement("id", new Variant(id));
 
         // Adding marker to markerLayer, or showing marker on map!
         markerLayer.add(marker);
 
-        markerLayer.setVectorElementEventListener(new VectorElementEventListener() {
-                                                                      @Override
-                                                                      public boolean onVectorElementClicked(ElementClickData clickInfo) {
-                                                                          markerLayer.remove(marker);
-                                                                          return true;
-                                                                      }
 
+        markerLayer.setVectorElementEventListener(new VectorElementEventListener() {
+                                                      @Override
+                                                      public boolean onVectorElementClicked(ElementClickData clickInfo) {
+                                                          //
+                                                          if (clickInfo.getClickType() == ClickType.CLICK_TYPE_DOUBLE) {
+                                                              final long removeId = clickInfo.getVectorElement().getMetaDataElement("id").getLong();
+                                                              runOnUiThread(new Runnable() {
+                                                                  @Override
+                                                                  public void run() {
+                                                                      Toast.makeText(AddMarker.this, "نشانگر شماره " + removeId + " حذف شد!", Toast.LENGTH_SHORT).show();
                                                                   }
+                                                              });
+                                                              markerLayer.remove(clickInfo.getVectorElement());
+
+                                                          } else if (clickInfo.getClickType() == ClickType.CLICK_TYPE_SINGLE) {
+                                                              changeMarkerToBlue((Marker)clickInfo.getVectorElement());
+                                                          }
+                                                          return true;
+                                                      }
+
+                                                  }
         );
+    }
+
+    private void changeMarkerToBlue(Marker redMarker){
+        // create new marker style
+        MarkerStyleCreator markStCr = new MarkerStyleCreator();
+        markStCr.setSize(20f);
+        markStCr.setBitmap(BitmapUtils.createBitmapFromAndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker_blue)));
+        markStCr.setAnimationStyle(animSt);
+        MarkerStyle blueMarkSt = markStCr.buildStyle();
+
+        redMarker.setStyle(blueMarkSt);
     }
 }

@@ -1,4 +1,4 @@
-package org.neshan.madadi.starter.activity;
+package org.neshan.sample.starter.activity;
 
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -26,7 +26,7 @@ import org.neshan.graphics.ARGB;
 import org.neshan.layers.Layer;
 import org.neshan.layers.VectorElementEventListener;
 import org.neshan.layers.VectorElementLayer;
-import org.neshan.madadi.starter.R;
+import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
 import org.neshan.styles.AnimationStyle;
@@ -301,10 +301,11 @@ public class RemoveMarker extends AppCompatActivity {
         selectedMarker = selectMarker;
     }
 
+    // collapse bottom sheet
     private void collapseBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
-
+    // expand bottom sheet
     private void expandBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }

@@ -301,10 +301,11 @@ public class RemoveMarker extends AppCompatActivity {
         selectedMarker = selectMarker;
     }
 
+    // collapse bottom sheet
     private void collapseBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
-
+    // expand bottom sheet
     private void expandBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }

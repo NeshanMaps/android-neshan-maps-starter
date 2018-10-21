@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RemoveMarker">
+
+    <!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:context=".activity.RemoveMarker">-->
+
+        <org.neshan.ui.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--<Button-->
+            <!--android:id="@+id/add_marker"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--android:background="@drawable/rounded_white_bg"-->
+            <!--android:drawableStart="@drawable/ic_marker_2"-->
+            <!--android:drawablePadding="8dp"-->
+            <!--android:drawableTint="@color/iconPrimaryTintColor"-->
+            <!--android:elevation="8dp"-->
+            <!--android:onClick="addMarkerButton"-->
+            <!--android:paddingStart="8dp"-->
+            <!--android:paddingEnd="8dp"-->
+            <!--android:text="اضافه کردن پین"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--tools:targetApi="m" />-->
+
+    <!--</android.support.constraint.ConstraintLayout>-->
+
+    <include
+        android:id="@+id/remove_marker_bottom_sheet_include"
+        layout="@layout/remove_marker_bottom_sheet" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -21,6 +21,7 @@ import org.neshan.sample.starter.activity.DrawPolygon;
 import org.neshan.sample.starter.activity.AddLabel;
 import org.neshan.sample.starter.activity.OnlineLayer;
 import org.neshan.sample.starter.activity.POILayer;
+import org.neshan.sample.starter.activity.RemoveMarker;
 import org.neshan.sample.starter.activity.TrafficLayer;
 import org.neshan.sample.starter.activity.UserLocation;
 
@@ -112,6 +113,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void goToLabelActivity(View view) {
         Intent intent = new Intent(this, AddLabel.class);
+        startActivity(intent);
+    }
+
+    public void goToRemoveMarkerActivity(View view) {
+        Intent intent = new Intent(this, RemoveMarker.class);
         startActivity(intent);
     }
 

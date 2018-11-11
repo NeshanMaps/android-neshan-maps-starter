@@ -59,8 +59,8 @@ public class RemoveMarker extends AppCompatActivity {
     // save selected Marker for select and deselect function
     Marker selectedMarker = null;
     // Tip Strings
-    String firstTipString = "<b>" + "قدم اول: " + "</b> " + "برای ایجاد پین جدید نگهدارید!";
-    String secondTipString = "<b>" + "قدم دوم: " + "</b> " + "برای حذف روی پین لمس کنید!";
+    static String firstTipString = "<b>" + "قدم اول: " + "</b> " + "برای ایجاد پین جدید نگهدارید!";
+    static String secondTipString = "<b>" + "قدم دوم: " + "</b> " + "برای حذف روی پین لمس کنید!";
 
 
     @Override
@@ -105,12 +105,6 @@ public class RemoveMarker extends AppCompatActivity {
                         if (selectedMarker == null) {
                             // if bottom sheet is expanded and no marker selected second tip is going up (for just one time)
                             collapseBottomSheet();
-                            remove_marker_bottom_sheet.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    marker_id.setText(Html.fromHtml(secondTipString));
-                                }
-                            });
                             // delay for collapsing then expanding bottom sheet
                             remove_marker_bottom_sheet.postDelayed(new Runnable() {
                                 @Override
@@ -118,6 +112,12 @@ public class RemoveMarker extends AppCompatActivity {
                                     expandBottomSheet();
                                 }
                             }, 200);
+                            remove_marker_bottom_sheet.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    marker_id.setText(Html.fromHtml(secondTipString));
+                                }
+                            });
                         } else {
                             // if bottom sheet is expanded and any marker selected deselect that marker by long tap
                             deselectMarker(selectedMarker);
@@ -219,7 +219,7 @@ public class RemoveMarker extends AppCompatActivity {
 
     // This method gets a LngLat as input and adds a marker on that position
     private void addMarker(LngLat loc, long id) {
-//      If you want to have only one marker on map at a time, uncomment next line to delete all markers before adding a new marker
+        // If you want to have only one marker on map at a time, uncomment next line to delete all markers before adding a new marker
 //        markerLayer.clear();
 
         // Creating animation for marker. We should use an object of type AnimationStyleBuilder, set

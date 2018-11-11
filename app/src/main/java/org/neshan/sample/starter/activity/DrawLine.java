@@ -92,7 +92,6 @@ public class DrawLine extends AppCompatActivity {
         // Creating a line from LineGeom. here we use getLineStyle() method to define line styles
         Line line = new Line(lineGeom, getLineStyle());
         // adding the created line to lineLayer, showing it on map
-        VectorElementLayer lineLayer = NeshanServices.createVectorElementLayer();
         lineLayer.add(line);
         // focusing camera on first point of drawn line
         map.setFocalPointPosition(new LngLat(51.327650, 35.769368),0.25f );

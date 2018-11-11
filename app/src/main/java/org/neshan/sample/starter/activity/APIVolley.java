@@ -238,7 +238,7 @@ public class APIVolley extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String>  params = new HashMap<>();
                 // TODO: replace "YOUR_API_KEY" with your api key
-                params.put("Api-Key", "YOUR_API_KEY");
+                params.put("Api-Key", "service.kREahwU7lND32ygT9ZgPFXbwjzzKukdObRZsnUAJ");
                 return params;
             }
         };

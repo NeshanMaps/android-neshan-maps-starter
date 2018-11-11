@@ -184,7 +184,7 @@ public class APIOkHttp extends AppCompatActivity {
 
         Request request = new Request.Builder()
                 //TODO: replace "YOUR_API_KEY" with your api key
-                .header("Api-Key", "YOUR_API_KEY")
+                .header("Api-Key", "service.kREahwU7lND32ygT9ZgPFXbwjzzKukdObRZsnUAJ")
                 .url(requestURL)
                 .build();
 

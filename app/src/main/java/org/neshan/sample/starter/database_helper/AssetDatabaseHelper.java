@@ -15,8 +15,8 @@ import java.io.OutputStream;
 public class AssetDatabaseHelper extends SQLiteOpenHelper {
 
     // CHANGE THIS TWO LINE OF CODES!
-    //The Android's default system path of your application database.
-    private static String DB_PATH = "/data/data/org.neshan.sample.starter/databases/";
+    // The Android's default system path of your application database.
+    private static String DB_PATH = "/data/data/org.neshan.sample.starter.v2/databases/";
     private static String DB_NAME = "database.sqlite";
 
     private SQLiteDatabase myDataBase;

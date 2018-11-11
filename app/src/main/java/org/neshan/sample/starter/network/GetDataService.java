@@ -10,7 +10,7 @@ import retrofit2.http.Url;
 public interface GetDataService {
 
     // TODO: replace "YOUR_API_KEY" with your api key
-    @Headers("Api-Key: YOUR_API_KEY")
+    @Headers("Api-Key: service.kREahwU7lND32ygT9ZgPFXbwjzzKukdObRZsnUAJ")
     @GET
     Call<NeshanAddress> getNeshanAddress(@Url String url);
 }

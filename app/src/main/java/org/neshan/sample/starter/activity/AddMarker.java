@@ -134,7 +134,7 @@ public class AddMarker extends AppCompatActivity {
         // Creating marker style. We should use an object of type MarkerStyleCreator, set all features on it
         // and then call buildStyle method on it. This method returns an object of type MarkerStyle
         MarkerStyleCreator markStCr = new MarkerStyleCreator();
-        markStCr.setSize(20f);
+        markStCr.setSize(30f);
         markStCr.setBitmap(BitmapUtils.createBitmapFromAndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)));
         // AnimationStyle object - that was created before - is used here
         markStCr.setAnimationStyle(animSt);
@@ -179,7 +179,7 @@ public class AddMarker extends AppCompatActivity {
     private void changeMarkerToBlue(Marker redMarker){
         // create new marker style
         MarkerStyleCreator markStCr = new MarkerStyleCreator();
-        markStCr.setSize(20f);
+        markStCr.setSize(30f);
         // Setting a new bitmap as marker
         markStCr.setBitmap(BitmapUtils.createBitmapFromAndroidBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker_blue)));
         markStCr.setAnimationStyle(animSt);

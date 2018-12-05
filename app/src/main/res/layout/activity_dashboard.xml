@@ -755,7 +755,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            app:cardBackgroundColor="@color/darkPrimaryColor"
+            app:cardBackgroundColor="@color/lightPrimaryColor"
             app:cardCornerRadius="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
@@ -795,6 +795,50 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/item18"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            app:cardBackgroundColor="@color/darkPrimaryColor"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item15"
+            android:onClick="goToRoutingActivity">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="8dp"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/ic_routing" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="مسیریابی"
+                    android:textColor="@color/textPrimaryColorInverse"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/item19"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -842,7 +886,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/item19"
+            android:id="@+id/item20"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"

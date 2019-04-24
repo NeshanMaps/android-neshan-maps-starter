@@ -15,7 +15,6 @@ import org.neshan.core.LngLat;
 import org.neshan.core.Range;
 import org.neshan.layers.VectorElementLayer;
 import org.neshan.sample.starter.R;
-import org.neshan.sample.starter.model.NeshanAddress;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
 import org.neshan.styles.AnimationStyle;

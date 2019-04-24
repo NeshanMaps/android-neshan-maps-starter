@@ -1,4 +1,4 @@
-package org.neshan.sample.starter.model;
+package org.neshan.sample.starter.model.address;
 
 import com.google.gson.annotations.SerializedName;
 

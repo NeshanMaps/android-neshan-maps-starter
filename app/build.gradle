@@ -5,8 +5,8 @@ android {
     defaultConfig {
         applicationId "org.neshan.sample.starter.v2"
         minSdkVersion 19
-        versionCode 3
-        versionName "2.0.1"
+        versionCode 4
+        versionName "2.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        ndk {
 //            abiFilters 'armeabi-v7a'

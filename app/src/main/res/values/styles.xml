@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:fontFamily">@font/iran_sans_family</item>
         <item name="fontFamily">@font/iran_sans_family</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 </resources>

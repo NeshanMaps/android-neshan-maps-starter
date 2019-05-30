@@ -79,7 +79,7 @@ public class DrawLine extends AppCompatActivity {
     }
 
     // Drawing line on map
-    public LineGeom drawLineGeom(View view){
+    public LineGeom drawLineGeom(){
         // we clear every line that is currently on map
         lineLayer.clear();
         // Adding some LngLat points to a LngLatVector

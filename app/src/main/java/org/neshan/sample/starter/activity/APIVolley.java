@@ -23,7 +23,6 @@ import org.neshan.core.Range;
 import org.neshan.layers.VectorElementLayer;
 import org.neshan.sample.starter.R;
 import org.neshan.sample.starter.model.address.NeshanAddress;
-import org.neshan.sample.starter.network.PubKeyManager;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
 import org.neshan.styles.AnimationStyle;
@@ -181,17 +180,8 @@ public class APIVolley extends AppCompatActivity {
         String requestURL = "https://api.neshan.org/v1/reverse?lat=" + loc.getY() + "&lng=" + loc.getX();
         final String latLngAddr = String.format("%.6f", loc.getY()) + "," + String.format("%.6f", loc.getX());
 
-        TrustManager tm[] = {new PubKeyManager("30820122300d06092a864886f70d01010105000382010f003082010a0282010100b2d2b372f340619bdd691d443d5cc5c4fa458eb02709d232702b29bab76dd91a5fb13de61ba32100604c0071664feb928bafe4226204e605017d92dfbeaff27debf9c9d47709894a53d5717fac9a6c0f562697fc8ffaac1d633fa0c3781bf4d665940340bb603f6b821a460aa730eecb624acc165ab5e765b894938437702cbe582dd038c79c41603034258f675c63beb68b76cb844f916a800d222d5393eead1b1cff218b6a9b7abd71eada18f262b57fd378130bc1dd4ff1558c5d1c1823219b2a35a43cd4c0f178f5b85a00efc7c83dc6cfce8a2a24fba879bc401c276466f0f13fbb16ac70516badb03e1a01676a4a8199be2096f2a09e719de5c084999d0203010001")};
-        SSLSocketFactory pinnedSSLSocketFactory = null;
-        try {
-            SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, tm, null);
-            pinnedSSLSocketFactory = context.getSocketFactory();
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            e.printStackTrace();
-        }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this, new HurlStack(null, pinnedSSLSocketFactory));
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         StringRequest reverseGeoSearchRequest = new StringRequest(
                 Request.Method.GET,

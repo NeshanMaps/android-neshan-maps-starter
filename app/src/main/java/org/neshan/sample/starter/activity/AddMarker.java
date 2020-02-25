@@ -1,9 +1,8 @@
 package org.neshan.sample.starter.activity;
 
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -14,7 +13,6 @@ import org.neshan.core.Variant;
 import org.neshan.layers.Layer;
 import org.neshan.layers.VectorElementEventListener;
 import org.neshan.layers.VectorElementLayer;
-import org.neshan.layers.VectorLayer;
 import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
@@ -30,8 +28,6 @@ import org.neshan.ui.MapEventListener;
 import org.neshan.ui.MapView;
 import org.neshan.utils.BitmapUtils;
 import org.neshan.vectorelements.Marker;
-
-import java.util.Vector;
 
 public class AddMarker extends AppCompatActivity {
 

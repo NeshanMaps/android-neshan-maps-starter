@@ -1,31 +1,21 @@
 package org.neshan.sample.starter.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.neshan.core.LngLat;
-import org.neshan.core.LngLatVector;
 import org.neshan.core.Range;
-import org.neshan.geometry.LineGeom;
-import org.neshan.graphics.ARGB;
-import org.neshan.layers.VectorElementLayer;
 import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
-import org.neshan.styles.LineStyle;
-import org.neshan.styles.LineStyleCreator;
 import org.neshan.ui.MapEventListener;
 import org.neshan.ui.MapView;
-import org.neshan.vectorelements.Line;
-
-import java.util.List;
 
 
 public class ChangeCameraTilt extends AppCompatActivity {

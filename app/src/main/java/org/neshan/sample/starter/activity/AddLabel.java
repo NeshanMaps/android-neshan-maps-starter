@@ -1,6 +1,6 @@
 package org.neshan.sample.starter.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,9 +13,6 @@ import org.neshan.layers.VectorElementLayer;
 import org.neshan.sample.starter.R;
 import org.neshan.services.NeshanMapStyle;
 import org.neshan.services.NeshanServices;
-import org.neshan.styles.AnimationStyle;
-import org.neshan.styles.AnimationStyleBuilder;
-import org.neshan.styles.AnimationType;
 import org.neshan.styles.LabelStyle;
 import org.neshan.styles.LabelStyleCreator;
 import org.neshan.ui.ClickData;

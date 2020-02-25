@@ -2,8 +2,8 @@ package org.neshan.sample.starter.activity;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;

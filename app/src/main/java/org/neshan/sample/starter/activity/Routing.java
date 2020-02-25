@@ -1,7 +1,7 @@
 package org.neshan.sample.starter.activity;
 
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +27,6 @@ import org.neshan.core.Range;
 import org.neshan.core.Variant;
 import org.neshan.geometry.LineGeom;
 import org.neshan.graphics.ARGB;
-import org.neshan.layers.VectorElementEventListener;
 import org.neshan.layers.VectorElementLayer;
 import org.neshan.sample.starter.R;
 import org.neshan.sample.starter.network.PubKeyManager;
@@ -43,7 +42,6 @@ import org.neshan.styles.MarkerStyle;
 import org.neshan.styles.MarkerStyleCreator;
 import org.neshan.ui.ClickData;
 import org.neshan.ui.ClickType;
-import org.neshan.ui.ElementClickData;
 import org.neshan.ui.MapEventListener;
 import org.neshan.ui.MapView;
 import org.neshan.utils.BitmapUtils;

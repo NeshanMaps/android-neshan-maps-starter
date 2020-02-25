@@ -1,6 +1,6 @@
 package org.neshan.sample.starter.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import org.neshan.core.LngLat;
 import org.neshan.core.LngLatVector;
 import org.neshan.core.Range;
-import org.neshan.geometry.LineGeom;
 import org.neshan.geometry.PolygonGeom;
 import org.neshan.graphics.ARGB;
 import org.neshan.layers.VectorElementLayer;
@@ -20,11 +19,7 @@ import org.neshan.styles.LineStyle;
 import org.neshan.styles.LineStyleCreator;
 import org.neshan.styles.PolygonStyle;
 import org.neshan.styles.PolygonStyleCreator;
-import org.neshan.ui.ClickData;
-import org.neshan.ui.ClickType;
-import org.neshan.ui.MapEventListener;
 import org.neshan.ui.MapView;
-import org.neshan.vectorelements.Line;
 import org.neshan.vectorelements.Polygon;
 
 

@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,8 +32,6 @@ import org.neshan.utils.BitmapUtils;
 import org.neshan.vectorelements.Marker;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseLayer extends AppCompatActivity {
 

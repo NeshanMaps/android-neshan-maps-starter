@@ -82,6 +82,26 @@ Make sure that you are using internet permission in your `AndroidManifest.xml` f
 -keep class org.neshan.** {*;}
 ```
 
+
+To reduce the final APK size you can add following lines to your `build.gradle (module:app)` file:
+
+```groovy
+android{
+  ..
+  ..
+  splits {
+    abi {
+        enable true
+        reset()
+        include 'armeabi-v7a'
+        universalApk false
+    }
+  }
+}
+```
+
+Adding the code line above makes your APK to support mentioned architectures only. For more information about different available architectures and also more on ABI filter, you can checkout [ABI Mangement](https://developer.android.com/ndk/guides/abis) document.
+
 ### 4. Usage
 
 Define Neshan MapView in xml:

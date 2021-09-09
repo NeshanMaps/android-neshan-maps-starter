@@ -8,7 +8,7 @@ First, you need to retrieve a license for using the Android SDK in your app and 
 
 ### 1. SHA1 Key
 
-The SHA1 key of any sign key is unique, but there is a debug sign key in your system when you install android studio. You can use your shared (between your projects) debug sign key, your release sign key, or both of them to use for retrieving license files from the Neshan platform website.
+The SHA1 key of any sign key is unique, but there is a debug sign key in your system when you install android studio. You can use your shared debug sign key (shared between your projects), your release sign key, or both of them to use for retrieving license files from the Neshan platform website.
 
 To do that, replace `/PATH/TO/SIGN/KEY` with the path of your sign key and `<AliasOfSignKey>` with the alias of that signing key.
 

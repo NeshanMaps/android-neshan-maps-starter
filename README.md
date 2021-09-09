@@ -91,3 +91,7 @@ Define Neshan MapView in xml:
     android:layout_height="match_parent"
     android:id="@+id/map"/>
 ```
+
+For more information about the usage of Neshan Map SDK, please check out the [wiki](https://github.com/NeshanMaps/android-neshan-maps-starter/wiki) page.
+
+If you needed any support about using the SDK or you had any problem; Please don't hesitate to [contacting us](https://platform.neshan.org/contact).

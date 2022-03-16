@@ -11,7 +11,7 @@
 
   
   اپلیکیشن نمونه:<div dir=ltr>
-https://github.com/NeshanMaps/android-sdk-examples-0-9-8
+https://platform.neshan.org/sdk/android-sdk-examples-0-9-8
   </div>
 
   </div>

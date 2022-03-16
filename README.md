@@ -4,14 +4,14 @@
    &rlm;
 
   مستندات توسعه دهندگان:<div dir=ltr>
-  https://platform.neshan.org/sdk/android-sdk-getting-started
+  https://platform.neshan.org/sdk/android-sdk-getting-started-0-9-8
     </div>
 
   &rlm;
 
   
   اپلیکیشن نمونه:<div dir=ltr>
-https://github.com/NeshanMaps/android-neshan-maps-starter-master-new
+https://github.com/NeshanMaps/android-sdk-examples-0-9-8
   </div>
 
   </div>
